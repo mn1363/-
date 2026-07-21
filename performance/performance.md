@@ -1,0 +1,3 @@
+Performance: Apple ~1.5s LCP, Amazon ~2.8s (dense). SEO: Apple uses semantic HTML, schema Product, OpenGraph; Amazon rich snippets. HTML: Apple uses <nav>, <main>, <article>, aria-label; Amazon uses complex nested tables/divs. Responsive: Apple flex/grid fluid; Amazon multi-breakpoint dense grid. Limits: No DevTools access granted; values estimated via public tools.
+### CMS Performance Constraints
+To maintain Largest Contentful Paint (LCP) under 2.5 seconds on CMS platforms, mandatory optimizations include next-gen image formats (WebP/AVIF), strict lazy loading for dense media galleries, and critical CSS extraction.

@@ -1,0 +1,14 @@
+DESIGN TOKENS
+--color-bg: #FFFFFF;
+--color-text: #1D1D1F;
+--font-heading: SF Pro Display;
+--font-body: SF Pro Text;
+--spacing-base: 8px;
+--spacing-xl: 48px;
+--radius-card: 16px;
+--color-bg: #0F0F10;            /* Dark luxury charcoal background */
+--color-surface: #1C1C1E;       /* Elevated card and module surfaces */
+--color-text-primary: #F2F2F7;  /* High-contrast accessible light text */
+--color-accent: #C0C0C0;        /* Premium metallic silver accent */
+--font-heading: 'SF Pro Display', sans-serif;
+--spacing-base: 8px;

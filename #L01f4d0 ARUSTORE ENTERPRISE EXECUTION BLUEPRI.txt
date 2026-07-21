@@ -1,0 +1,75 @@
+📐 ARUSTORE ENTERPRISE EXECUTION BLUEPRINTProject: Luxury Aluminum Decorative Workshop E-CommercePlatform Target: Shopify (هستهٔ تجاری) + سرویس اختصاصی محدود برای محاسبه‌گر قیمت/تولید/۳بعدی — مطابق تصمیم نهایی در Frontend Architecture.md بخش ۷ (نه WooCommerce، برای جلوگیری از دو مسیر موازی)Design Philosophy: Luxury Minimalist / Material Texture / Zero Clutter۱. تصمیمات استراتژیک نهایی (Final Decision Log)۱.۱. معماری پلتفرم و زیرساخت (Core Stack Decisions)انتخاب CMS: پیاده‌سازی روی بستر CMS استاندارد جهت پایداری مدیریت انبار، سفارشات و محصولات سفارشی.  استراتژی تم (Theme Architecture): توسعه بر پایه تم اختصاصی با سبک Luxury Minimalist (مشابه الگوی Apple/Tesla) به جای تم‌های آماده شلوغ بازار.  مدیریت دارایی‌ها (Asset Pipeline): تبدیل و فشرده‌سازی خودکار تمامی تصاویر به فرمت‌های WebP / AVIF جهت حفظ کیفیت بافت فلز بدون افت سرعت.  ۱.۲. شاخص‌های کلیدی عملکرد فنی (Technical Key Performance Indicators)Largest Contentful Paint (LCP): کمتر از $2.0s$ (سخت‌گیرانه‌تر از میانگین $2.5s$).  First Input Delay (FID) / INP: کمتر از $100ms$.Cumulative Layout Shift (CLS): برابر با $0.00$ (عدم جابه‌جایی عناصر هنگام لود).Accessibility Target: انطباق ۱۰۰٪ با WCAG 2.2 Level AA.  ۲. معماری جامع اطلاعات (Information Architecture & Specification)۲.۱. نقشه ساختار سایت (System Sitemap)┌─────────────────────────────────────────────────────────────────────────────┐
+│                             HOMEPAGE (Hero Grid)                            │
+└──────┬──────────────────────────────┬──────────────────────────────┬────────┘
+       │                              │                              │
+┌──────▼────────┐              ┌──────▼────────┐              ┌──────▼────────┐
+│   CATALOG     │              │    CUSTOM     │              │   BRANDING    │
+│  COLLECTION   │              │   WORKSHOP    │              │   HERITAGE    │
+└──────┬────────┘              └───────────────┘              └───────────────┘
+       │
+┌──────▼──────────────────────────────────────────────────────────────────────┐
+│                    PRODUCT DETAIL PAGE (PDP - 3D/AR Engine)                 │
+└──────┬─────────────────────────────────────────────────────────────┬────────┘
+       │                                                             │
+┌──────▼────────┐                                             ┌──────▼────────┐
+│  CART DRAWER  │                                             │ CUSTOM INQUIRY│
+└──────┬────────┘                                             └───────────────┘
+       │
+┌──────▼──────────────────────────────────────────────────────────────────────┐
+│             SINGLE-PAGE GUEST CHECKOUT (6-8 Fields / Express Pay)           │
+└─────────────────────────────────────────────────────────────────────────────┘
+۲.۲. جزئیات معماری صفحات اصلی (Page Specification Specs)الف) صفحه اصلی (Homepage)Hero Section: ویدیوی کوتاه لکه‌گیری/بافت آلومینیوم (Autoplay, Muted, Loop) به همراه عنوان ۳۴pt تا ۴۸pt با خط SF Pro Display.  Grid Section: شبکه ۳ ستونی در دسکتاپ و ۱ ستونی در موبایل با f-pattern برای نمایش ۵ کالا برتر.Whitespace Allocation: حداقل ۶۴px تا ۹۶px فاصله عمودی بین بخش‌های اصلی برای ایجاد احساس لوکس.  ب) صفحه محصول (PDP)Media Container: ۶۰٪ عرض صفحه اختصاص داده شده به گالری عکس‌های ۴K با زوم لمسی/ماوس در سطح پیکسل جهت ارزیابی بافت فلز.  AR/3D Module: دکمه شناور "View in Your Space" متصل به مدل ۳بعدی GLTF/USDZ جهت رندر آنی در محیط واقعی خریدار (الگوی IKEA).  Technical Details: استفاده از آکاردئون مینیمال برای ابعاد، وزن، نحوه نصب و نگهداری آلومینیوم.  ج) فرایند تسویه‌حساب (Checkout UX)Single-Page Layout: تمام مراحل در یک صفحه بدون Refresh.  Guest Checkout Default: حذف کامل فرم ثبت‌نام پیش از خرید.  Field Limit: ۶ تا ۸ فیلد متنی (نام، نام خانوادگی، شماره تماس، آدرس، کد پستی، شهر) — هماهنگ‌شده با عدد ذکرشده در سایر اسناد پروژه (قبلاً این سند به‌اشتباه عدد ۷ را جدا از بقیه ذکر کرده بود). Express Wallet Row: دکمه‌های خرید یک‌کلیکی (Apple Pay / Google Pay / درگاه شتابی سریع) در بالایی‌ترین قسمت فرم.  ۳. سیستم طراحی جامع (Enterprise Design System)۳.۱. توکن‌های متغیر CSS (Design Tokens - Production Ready)CSS:root {
+  /* ==========================================================================
+     COLOR SYSTEM (Semantic Luxury Dark Palette)
+     ========================================================================== */
+  --color-bg-base: #0F0F10;           /* Background Canvas (Luxury Dark Charcoal) */
+  --color-bg-surface: #1C1C1E;        /* Cards & Elevating Elements */
+  --color-bg-overlay: #2C2C2E;        /* Modals & Slide-overs */
+  
+  --color-text-primary: #F2F2F7;     /* High Contrast Text (WCAG AAA compliant, ~14:1 vs bg-base) */
+  --color-text-secondary: #8E8E93;   /* Subtitles & Captions — verify against bg-base before use on small text */
+  --color-text-tertiary: #8A8A8F;    /* FIXED: مقدار قبلی (#636366) کنتراست ۳.۲:۱ داشت و استاندارد WCAG AA (۴.۵:۱) را برای متن رد می‌کرد. این مقدار ۵.۵۸:۱ است و برای Placeholder/Metadata که به‌عنوان متن خوانده می‌شود قابل‌قبول است. */
+
+  --color-accent-metallic: #C0C0C0;  /* Premium Aluminum Accent */
+  --color-accent-hover: #D1D1D6;     /* Metallic Hover State */
+  --color-border-subtle: #2C2C2E;     /* Divider Lines */
+
+  /* ==========================================================================
+     TYPOGRAPHY SCALE (Dynamic Type Mapping)
+     ========================================================================== */
+  --font-family-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-body: 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --text-large-title: 2.25rem;       /* 36px / Line Height: 1.2 / Tracking: -0.02em */
+  --text-title-1: 1.75rem;          /* 28px / Line Height: 1.25 */
+  --text-title-2: 1.375rem;         /* 22px / Line Height: 1.3 */
+  --text-body: 1.0625rem;           /* 17px / Line Height: 1.47 */
+  --text-caption: 0.8125rem;        /* 13px / Line Height: 1.38 */
+
+  /* ==========================================================================
+     SPACING & GRID SYSTEM (Base 8px Increments)
+     ========================================================================== */
+  --space-2xs: 4px;
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 32px;
+  --space-xl: 48px;
+  --space-2xl: 64px;
+  --space-3xl: 96px;
+
+  --radius-card: 12px;
+  --radius-button: 8px;
+  --radius-input: 6px;
+
+  /* ==========================================================================
+     ANIMATION TIMING & MOTION
+     ========================================================================== */
+  --motion-duration-fast: 150ms;
+  --motion-duration-standard: 250ms;
+  --motion-easing-standard: cubic-bezier(0.16, 1, 0.3, 1); /* Custom Smooth Ease-Out */
+}
+۳.۲. قوانين فنی مؤلفه‌ها (Component Rules)Touch Targets: تمامی دکمه‌ها و عناصر تعاملی باید حداقل ابعاد 44px × 44px داشته باشند.  Focus States: حلقه فوکوس کیبورد باید حداقل به ضخامت ۲px با رنگ --color-accent-metallic شفاف برای تمام عناصر قابل فوکوس در دسترس باشد.  Motion Guard: انیمیشن‌ها باید در صورت فعال بودن تنظیمات سیستم کاربر روی prefers-reduced-motion: reduce کاملاً غیرفعال یا به Fade ساده تبدیل شوند.  ۴. نقشه راه اجرایی و مدیریت پروژه (Implementation Roadmap)این نقشه راه شامل ۵ گام اجرایی کاملاً شفاف با تعریف دقیق خروجی‌ها (Deliverables) جهت نظارت مستقیم مدیر پروژه است:[Phase 1: CMS Setup] ──► [Phase 2: PDP & 3D Engine] ──► [Phase 3: Checkout Optimization]
+                                                                  │
+[Phase 5: Production Launch] ◄── [Phase 4: QA, Perf & Accessibility] ◄─┘
+فاز ۱: زیرساخت CMS و پیاده‌سازی سیستم طراحی (هفته ۱ و ۲)اقدامات:نصب و کانفیگ تم پایه خالی روی CMS.  تزریق توکن‌های CSS معرفی‌شده به بخش Global Stylesheet تم.  پیاده‌سازی فونت‌های SF Pro و تنظیم گرید ۸ پیکسلی پایه.  خروجی کلیدی (Deliverable): صفحه هوم‌پایج فرضی همراه با تایپوگرافی، رنگ‌ها و فواصل کاملاً یکدست طبق برند بوک.فاز ۲: ساختار صفحات محصول و افزونه AR/3D (هفته ۳ و ۴)اقدامات:پیاده‌سازی گالری تصویر PDP با قابلیت Deep Zoom با توانایی نمایش جزئیات آلومینیوم.  اتصال ماژول WebXR / AR JS جهت رندر مدل‌های ۳بعدی محصولات روی گوشی بدون نیاز به نصب اپلیکیشن.  کدنویسی بخش مشخصات فنی در قالب آکاردئون‌های مینیمال CSS.  خروجی کلیدی (Deliverable): صفحه PDP کامل با پیش‌نمایش واقعی ۳بعدی.فاز ۳: بهینه‌سازی فرم تسویه‌حساب (هفته ۵)اقدامات:ساده‌سازی فرآیند تسویه‌حساب به یک صفحه متمرکز (Single-page Checkout).  فعال‌سازی حالت Guest Checkout به‌طور پیش‌فرض و غیرفعال کردن فیلدهای غیرضروری.  افزودن درگاه‌های پرداخت سریع به بالای فرم خرید.  خروجی کلیدی (Deliverable): نرخ رهاسازی کمتر و فرم خرید آماده در ۶ فیلد.فاز ۴: ممیزی عملکرد، SEO و دسترس‌پذیری (هفته ۶)اقدامات:پیکربندی افزونه‌های کاشه و تبدیل تصاویر به فرمت‌های WebP/AVIF.  پیاده‌سازی متاتگ‌های Schema استاندارد (Product ،Offer ،AggregateRating).  تست ناوبری سایت با کیبورد و خواننده‌های صفحه (VoiceOver / NVDA).  خروجی کلیدی (Deliverable): دریافت تاییدیه لود زیر ۲ ثانیه در Lighthouse و گواهی دسترس‌پذیری WCAG 2.2 AA.فاز ۵: تست نهایی و انتشار رسمی (هفته ۷)اقدامات:تست خرید نهایی روی انواع دستگاه‌ها (iOS ،Android ،Desktop).تست رعایت منطقه لمسی شست (Thumb Zone) در موبایل.  انتقال پروژه به دامنه اصلی و انتشار فروشگاه.خروجی کلیدی (Deliverable): فروشگاه آنلاین آماده فعالیت رسمی.این مستند کاملاً مستقل، دقیق، بدون ابهام و آماده کپی مستقیم جهت ثبت در مستندات پروژه یا تحویل به تیم‌های فنی و طراحی است.
